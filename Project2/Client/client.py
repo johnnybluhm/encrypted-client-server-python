@@ -29,6 +29,8 @@ def pad_message(message):
 
 # TODO: Generate a cryptographically random AES key
 def generate_key():
+
+    #AES has 128 bits or 16 bytes
     return os.urandom(16)
     
 
