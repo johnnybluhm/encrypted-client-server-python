@@ -14,6 +14,8 @@
 """
 
 import socket
+import Crypto 
+from Crypto.Cipher import AES
 
 host = "localhost"
 port = 10001
@@ -26,8 +28,12 @@ def pad_message(message):
 
 # Write a function that decrypts a message using the server's private key
 def decrypt_key(session_key):
-    # TODO: Implement this function
-    pass
+
+    private_key = open("private_key", "r").read()
+
+    cipher_object = AES.new(private_key)
+
+    return cipher_object.decrypt(session_key)
 
 
 # Write a function that decrypts a message using the session key
