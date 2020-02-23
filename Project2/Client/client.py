@@ -15,12 +15,14 @@
 
 import socket
 import os
+import sys
 import base64
 import Crypto 
 from Crypto.Cipher import AES
+from Crypto.PublicKey import RSA
 
 
-host = "localhost"
+host = "127.0.0.1"
 port = 10001
 
 
@@ -32,7 +34,6 @@ def pad_message(message):
 
 # TODO: Generate a cryptographically random AES key
 def generate_key():
-
     #AES has 128 bits or 16 bytes
     return os.urandom(16)
     
@@ -42,8 +43,12 @@ def generate_key():
 # key and return the value
 def encrypt_handshake(session_key):
 
-    public_key = open("public_key.pub", "r").read()
+    with open(os.path.join(sys.path[0], "public_key.pub"), "r") as f:
+        public_key = f.read()
+    
+    public_key = RSA.importKey(public_key).exportKey
 
+    
     cipher_object = AES.new(public_key)
 
     return cipher_object.encrypt(session_key)
@@ -74,6 +79,7 @@ def receive_message(sock):
 
 
 def main():
+        
     user = input("What's your username? ")
     password = input("What's your password? ")
 
@@ -84,7 +90,6 @@ def main():
     server_address = (host, port)
     print('connecting to {} port {}'.format(*server_address))
     sock.connect(server_address)
-
     try:
         # Message that we need to send
         message = user + ' ' + password
