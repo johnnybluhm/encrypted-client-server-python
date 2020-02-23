@@ -15,6 +15,7 @@
 
 import socket
 import os
+import base64
 
 
 host = "localhost"
@@ -38,8 +39,7 @@ def generate_key():
 # Takes an AES session key and encrypts it using the appropriate
 # key and return the value
 def encrypt_handshake(session_key):
-    # TODO: Implement this function
-    pass
+    return base64.b64encode(session_key)
 
 
 # Encrypts the message using AES. Same as server function
