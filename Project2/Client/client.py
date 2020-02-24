@@ -45,16 +45,20 @@ def encrypt_handshake(session_key):
 
     with open(os.path.join(sys.path[0], "public_key.pub"), "r") as f:
         public_key = f.read()
+        
     
-    public_key = RSA.importKey(public_key).exportKey
+    public_key = RSA.importKey(public_key)
 
     
-    cipher_object = AES.new(public_key)
 
-    return cipher_object.encrypt(session_key)
+    #needs a K value of byte string so I threw in a random byte string
+    encrypted_key = public_key.encrypt(session_key, os.urandom(16))
+
+    #return only first part of tuple
+    return encrypted_key[0]
 
 
-
+\
 # Encrypts the message using AES. Same as server function
 def encrypt_message(message, session_key):
     # TODO: Implement this function
