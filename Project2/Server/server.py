@@ -18,6 +18,7 @@ import Crypto
 import sys
 import os
 from Crypto.Cipher import AES
+from Crypto.PublicKey import RSA
 
 host = "127.0.0.1"
 port = 10001
@@ -34,11 +35,15 @@ def decrypt_key(session_key):
     with open(os.path.join(sys.path[0], "private_key"), "r") as f:
         private_key = f.read()
 
-    cipher_object = AES.new(private_key)
+    private_key = RSA.importKey(private_key)
+
+    decrypted_key =private_key.decrypt(session_key)
+
+    print(decrypted_key)
 
 
-    print(cipher_object.decrypt(session_key))
-    return cipher_object.decrypt(session_key)
+    
+    return decrypted_key
 
 
 # Write a function that decrypts a message using the session key

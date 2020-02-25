@@ -46,7 +46,7 @@ def encrypt_handshake(session_key):
     with open(os.path.join(sys.path[0], "public_key.pub"), "r") as f:
         public_key = f.read()
         
-    
+    print(session_key)
     public_key = RSA.importKey(public_key)
 
     
