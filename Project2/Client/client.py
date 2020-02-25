@@ -22,6 +22,7 @@ from Crypto.Cipher import AES
 from Crypto.PublicKey import RSA
 
 
+
 host = "127.0.0.1"
 port = 10001
 
@@ -46,7 +47,7 @@ def encrypt_handshake(session_key):
     with open(os.path.join(sys.path[0], "public_key.pub"), "r") as f:
         public_key = f.read()
         
-    print(session_key)
+    
     public_key = RSA.importKey(public_key)
 
     

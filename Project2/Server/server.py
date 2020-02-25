@@ -19,6 +19,7 @@ import sys
 import os
 from Crypto.Cipher import AES
 from Crypto.PublicKey import RSA
+from Crypto.Hash import SHA256
 
 host = "127.0.0.1"
 port = 10001
@@ -85,10 +86,12 @@ def verify_hash(user, password):
             line = line.split("\t")
             if line[0] == user:
                 # TODO: Generate the hashed password
-                # hashed_password =
+                password_and_salt = password+line[1]
+                hashed_password =SHA256.new(str.encode(password_and_salt))
                 return hashed_password == line[2]
         reader.close()
     except FileNotFoundError:
+        print("NO FILE")
         return False
     return False
 
@@ -125,7 +128,17 @@ def main():
                 #decrpty message from client
                 decrypted_message = decrypt_message(ciphertext_message,plaintext_key)
                 print(decrypted_message)
+
                 # TODO: Split response from user into the username and password
+                split_msg = decrypted_message.split()
+
+                user_name = split_msg[0]
+                user_pswd = split_msg[1]
+
+                verify_hash(user_name,user_pswd)            
+                
+                
+
 
                 # TODO: Encrypt response to client
 
