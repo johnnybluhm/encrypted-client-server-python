@@ -61,14 +61,18 @@ def encrypt_handshake(session_key):
 \
 # Encrypts the message using AES. Same as server function
 def encrypt_message(message, session_key):
-    # TODO: Implement this function
-    pass
+
+    
+    cipher= AES.new(session_key)
+
+    return cipher.encrypt(pad_message(message))
 
 
 # Decrypts the message using AES. Same as server function
 def decrypt_message(message, session_key):
-    # TODO: Implement this function
-    pass
+    cipher= AES.new(session_key)
+
+    return cipher.decrypt(message)
 
 
 # Sends a message over TCP
@@ -113,6 +117,10 @@ def main():
             exit(0)
 
         # TODO: Encrypt message and send to server
+
+        encrypted_msg = encrypt_message(message,key)
+
+        send_message(sock, encrypted_msg)
 
         # TODO: Receive and decrypt response from server
     finally:
