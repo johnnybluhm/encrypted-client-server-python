@@ -140,7 +140,12 @@ def main():
                 user_name = split_msg[0].decode("utf-8") 
                 user_pswd = split_msg[1].decode("utf-8") 
 
-                print(verify_hash(user_name,user_pswd))          
+                if verify_hash(user_name,user_pswd) == True:
+                    success_msg = encrypt_message(pad_message("User Aunthenticated"), plaintext_key)
+                    send_message(connection, success_msg)
+                else:
+                    fail_msg = encrypt_message(pad_message("User not found"), plaintext_key)   
+                    send_message(connection,fail_msg)
                 
                 
 
@@ -148,7 +153,7 @@ def main():
                 # TODO: Encrypt response to client
 
                 # Send encrypted response
-                send_message(connection, ciphertext_response)
+                #send_message(connection, ciphertext_response)
             finally:
                 # Clean up the connection
                 connection.close()
