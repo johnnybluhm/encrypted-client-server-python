@@ -91,8 +91,6 @@ def verify_hash(user, password):
                 password_and_salt = password+line[1]
                 
                 hashed_password =SHA256.new(str.encode(password_and_salt)).hexdigest()
-                print(line[2])
-                print(hashed_password)
                 return hashed_password == line[2]
         reader.close()
     except FileNotFoundError:

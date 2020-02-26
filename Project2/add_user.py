@@ -7,6 +7,9 @@
 """
 from Crypto import Random
 from Crypto.Hash import SHA256
+import sys
+import os
+
 
 user = input("Enter a username: ")
 password = input("Enter a password: ")
@@ -15,9 +18,9 @@ password = input("Enter a password: ")
 salt = str(Random.get_random_bytes(32))
 password_and_salt = password+salt
 hashed_password = SHA256.new(str.encode(password_and_salt)).hexdigest()
-
+print(os.path.join(sys.path[0], "Server", "passfile.txt"))
 try:
-    reading = open("passfile.txt", 'r')
+    reading = open(os.path.join(sys.path[0], "Server", "passfile.txt"), 'r')
     for line in reading.read().split('\n'):
         if line.split('\t')[0] == user:
             print("User already exists!")
@@ -26,6 +29,6 @@ try:
 except FileNotFoundError:
     pass
 
-with open("passfile.txt", 'a+') as writer:
+with open(os.path.join(sys.path[0], "Server", "passfile.txt"), 'a+') as writer:
     writer.write("{0}\t{1}\t{2}\n".format(user, salt, hashed_password))
     print("User successfully added!")
