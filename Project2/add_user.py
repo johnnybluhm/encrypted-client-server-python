@@ -14,7 +14,7 @@ password = input("Enter a password: ")
 # TODO: Create a salt and hash the password
 salt = str(Random.get_random_bytes(32))
 password_and_salt = password+salt
-hashed_password = SHA256.new(str.encode(password_and_salt))
+hashed_password = SHA256.new(str.encode(password_and_salt)).hexdigest()
 
 try:
     reading = open("passfile.txt", 'r')

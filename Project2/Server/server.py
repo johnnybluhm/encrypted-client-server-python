@@ -20,7 +20,7 @@ import os
 from Crypto.Cipher import AES
 from Crypto.PublicKey import RSA
 from Crypto.Hash import SHA256
-
+from pathlib import PureWindowsPath
 host = "127.0.0.1"
 port = 10001
 
@@ -81,13 +81,18 @@ def send_message(connection, data):
 # True if they are and False if they aren't. The delimiters are newlines and tabs
 def verify_hash(user, password):
     try:
-        reader = open("passfile.txt", 'r')
+        
+        reader = open(os.path.join(sys.path[0], "passfile.txt"), 'r')
         for line in reader.read().split('\n'):
             line = line.split("\t")
+            
             if line[0] == user:
                 # TODO: Generate the hashed password
                 password_and_salt = password+line[1]
-                hashed_password =SHA256.new(str.encode(password_and_salt))
+                
+                hashed_password =SHA256.new(str.encode(password_and_salt)).hexdigest()
+                print(line[2])
+                print(hashed_password)
                 return hashed_password == line[2]
         reader.close()
     except FileNotFoundError:
@@ -127,15 +132,15 @@ def main():
 
                 #decrpty message from client
                 decrypted_message = decrypt_message(ciphertext_message,plaintext_key)
-                print(decrypted_message)
+                
 
                 # TODO: Split response from user into the username and password
                 split_msg = decrypted_message.split()
 
-                user_name = split_msg[0]
-                user_pswd = split_msg[1]
+                user_name = split_msg[0].decode("utf-8") 
+                user_pswd = split_msg[1].decode("utf-8") 
 
-                verify_hash(user_name,user_pswd)            
+                print(verify_hash(user_name,user_pswd))          
                 
                 
 
