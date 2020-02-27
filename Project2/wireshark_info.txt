@@ -1,0 +1,4 @@
+raw cap was program that read local host traffic. 
+Opened in wireshark and filtered traffic based on port
+number using "tcp.port==10001" as a display filter
+clicking on traffic shows what the messages were
