@@ -126,6 +126,8 @@ def main():
         # TODO: Receive and decrypt response from server
 
         print(decrypt_message(receive_message(sock), key))
+
+        send_message(sock, "WIRESHARK".encode())
     finally:
         print('closing socket')
         sock.close()
