@@ -147,7 +147,7 @@ def main():
                 
                 
 
-            send_message(connection, "DATA")
+            
                 # TODO: Encrypt response to client
 
                 # Send encrypted response
