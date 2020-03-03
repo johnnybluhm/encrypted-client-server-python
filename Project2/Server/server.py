@@ -8,7 +8,10 @@
         is provided as a sanity check)
 
     Put your team members' names:
-
+    
+Jordan Smart: josm7269@colorado.edu 
+Jonathan Bluhm: jobl6075@colorado.edu 
+Laura Kaiser: laka4851@colorado.edu 
 
 
 """
