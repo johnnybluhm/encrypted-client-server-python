@@ -47,13 +47,8 @@ def decrypt_key(session_key):
 		private_key = f.read()
 
 	private_key = RSA.importKey(private_key)
-
 	cipher = PKCS1_OAEP.new(private_key)
-
-	decrypted_key = cipher.decrypt(session_key)
-
-
-	
+	decrypted_key = cipher.decrypt(session_key)	
 	return decrypted_key
 
 
@@ -61,24 +56,19 @@ def decrypt_key(session_key):
 def decrypt_message(client_message, session_key):
 
 	cipher= AES.new(session_key, AES.MODE_ECB)
-
 	return cipher.decrypt(client_message)
-
 
 # Encrypt a message using the session key
 def encrypt_message(message, session_key):
 
 	message = pad_message(message).encode("utf8")
-
 	cipher= AES.new(session_key, AES.MODE_ECB)
-
 	return cipher.encrypt(message)
 
 
 # Receive 1024 bytes from the client
 def receive_message(connection):
 	return connection.recv(1024)
-
 
 # Sends message to client
 def send_message(connection, data):
@@ -88,7 +78,6 @@ def send_message(connection, data):
 	if type(data) != bytes:
 		data = data.encode()
 	connection.sendall(data)
-
 
 # A function that reads in the password file, salts and hashes the password, and
 # checks the stored hash of the password to see if they are equal. It returns
@@ -162,7 +151,10 @@ def main():
 				send_message(connection,fail_msg)
 			
 			unencrypted_message = receive_message(connection)
+			encrypted_message = receive_message(connection)
 			print("Unencrypted message from client: \n"+unencrypted_message.decode("utf-8"))
+
+			print("Encrypted message from client: \n"+str(encrypted_message))
 
 		except KeyboardInterrupt:
 			print("Finished with ctrl-c")

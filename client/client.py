@@ -25,23 +25,15 @@ import Crypto
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.PublicKey import RSA
 
-
-
 host = "127.0.0.1"
 port = 10001
 
-
-# A helper function that you may find useful for AES encryption
-# Is this the best way to pad a message?!?!
 def pad_message(message):
 	return message + " "*((16-len(message))%16)
 
-
-# TODO: Generate a cryptographically random AES key
 def generate_key():
 	#AES has 128 bits or 16 bytes
-	return os.urandom(16)    
-
+	return os.urandom(16) 
 
 # Takes an AES session key and encrypts it using the appropriate
 # key and return the value
@@ -50,29 +42,18 @@ def encrypt_handshake(session_key):
 	with open(os.path.join(sys.path[0], "public_key.pub"), "r") as f:
 		public_key = f.read()        
 	
-	public_key = RSA.importKey(public_key)    
-
+	public_key = RSA.importKey(public_key)
 	cipher = PKCS1_OAEP.new(public_key)
-	#needs a K value of byte string so I threw in a random byte string
 	encrypted_key = cipher.encrypt(session_key)
-
-	#return only first part of tuple
+	
 	return encrypted_key
 
 # Encrypts the message using AES. Same as server function
 def encrypt_message(message, session_key):
 
 	message = pad_message(message).encode("utf8")
-
 	cipher= AES.new(session_key, AES.MODE_ECB)
-
-	#nonce = cipher.nonce
-
-	#ciphertext, tag = cipher.encrypt_and_digest(pad_message(message))
-
 	return cipher.encrypt(message)
-	#return ciphertext
-
 
 # Decrypts the message using AES. Same as server function
 def decrypt_message(message, session_key):
@@ -131,8 +112,13 @@ def main():
 
 		print(decrypt_message(receive_message(sock), key))
 
-		send_message(sock, "sent from client no encryption".encode())
-		
+		last_message = "sent from client no encryption"
+		send_message(sock, last_message.encode())
+
+		last_message_encrypted = encrypt_message(last_message, key)
+
+		send_message(sock, last_message_encrypted)
+
 	finally:
 		print('closing socket')
 		sock.close()
