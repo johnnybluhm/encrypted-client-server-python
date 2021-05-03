@@ -123,54 +123,59 @@ def main():
 	sock.listen(1)
 
 	try:
-		while True:
-			# Wait for a connection
-			print('waiting for a connection')
-			connection, client_address = sock.accept()
-			try:
-				print('connection from', client_address)
+		
+		# Wait for a connection
+		print('waiting for a connection')
+		connection, client_address = sock.accept()
+		try:
+			print('connection from', client_address)
 
-				# Receive encrypted key from client
-				encrypted_key = receive_message(connection)
+			# Receive encrypted key from client
+			encrypted_key = receive_message(connection)
 
-				# Send okay back to client
-				send_message(connection, "okay")
+			# Send okay back to client
+			send_message(connection, "okay")
 
-				# Decrypt key from client
-				plaintext_key = decrypt_key(encrypted_key)
+			# Decrypt key from client
+			plaintext_key = decrypt_key(encrypted_key)
 
-				# Receive encrypted message from client
-				ciphertext_message = receive_message(connection)
+			# Receive encrypted message from client
+			ciphertext_message = receive_message(connection)
 
-				#decrypt message from client
-				decrypted_message = decrypt_message(ciphertext_message,plaintext_key)
-				
-
-				# TODO: Split response from user into the username and password
-				split_msg = decrypted_message.split()
-
-				user_name = split_msg[0].decode("utf-8") 
-				user_pswd = split_msg[1].decode("utf-8") 
-
-				if verify_hash(user_name,user_pswd) == True:
-					success_msg = encrypt_message(pad_message("User Aunthenticated"), plaintext_key)
-					send_message(connection, success_msg)
-				else:
-					fail_msg = encrypt_message(pad_message("User not found"), plaintext_key)   
-					send_message(connection,fail_msg)
+			#decrypt message from client
+			decrypted_message = decrypt_message(ciphertext_message,plaintext_key)
 			
-			except KeyboardInterrupt:
-				print("Finished with ctrl-c")
-				exit(0)
-			finally:
-				# Clean up the connection
-				connection.close()
+			print("Encrypted message is:\n"+str(ciphertext_message)+"\n")
+			print("Decrypted message is:\n"+decrypted_message.decode("utf-8")+"\n")
+
+			# TODO: Split response from user into the username and password
+			split_msg = decrypted_message.split()
+
+			user_name = split_msg[0].decode("utf-8") 
+			user_pswd = split_msg[1].decode("utf-8") 
+
+			if verify_hash(user_name,user_pswd) == True:
+				success_msg = encrypt_message(pad_message("User Aunthenticated"), plaintext_key)
+				send_message(connection, success_msg)
+			else:
+				fail_msg = encrypt_message(pad_message("User not found"), plaintext_key)   
+				send_message(connection,fail_msg)
+			
+			unencrypted_message = receive_message(connection)
+			print("Unencrypted message from client: \n"+unencrypted_message.decode("utf-8"))
+
+		except KeyboardInterrupt:
+			print("Finished with ctrl-c")
+			exit(0)
+		finally:
+			# Clean up the connection
+			connection.close()
 	except KeyboardInterrupt:
 				print("Finished with ctrl-c")
 				exit(0)
 	finally:
 		sock.close()
-
+	print("Server exited successfully!")
 
 if __name__ in "__main__":
 	signal(SIGINT, signal_handler)
