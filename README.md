@@ -7,7 +7,7 @@ Then further communication is done via the symmetric key.
 The images contain the inital message which is encrypted using PKI.
 Then one image shows encryption, while the other shows a message "WIRESHARK" that was sent to the server with no encryption.
 
-The server will print the username and password provided by the client decrypted and encrypted. The client then sends an unencrypted message. The client then encrypts that message and server will print it. 
+The server will print the username and password provided by the client decrypted and encrypted. The client then sends an unencrypted message. The client then encrypts that message and sends to server again. The server prints the encrypted and unencrypted versions. 
 
 # Install  
 pip install pycryptodome
