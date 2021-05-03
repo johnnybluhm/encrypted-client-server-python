@@ -9,6 +9,8 @@ Then one image shows encryption, while the other shows a message "WIRESHARK" tha
 
 The server will print the username and password provided by the client decrypted and encrypted. The client then sends an unencrypted message. The client then encrypts that message and sends to server again. The server prints the encrypted and unencrypted versions. 
 
+User authentication works. This portion was done to show that I can store passwords correctly. The passwords are all in the passfile.txt. The add_user.py is what will add users to the database.
+
 # Install  
 pip install pycryptodome
 
