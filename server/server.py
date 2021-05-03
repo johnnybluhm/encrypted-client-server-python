@@ -20,13 +20,20 @@ import socket
 import Crypto 
 import sys
 import os
+import signal
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.PublicKey import RSA
 from Crypto.Hash import SHA256
 from pathlib import PureWindowsPath
+from sys import exit
+from signal import signal, SIGINT
 host = "127.0.0.1"
 port = 10001
 
+#https://stackoverflow.com/questions/27360218/how-to-close-socket-connection-on-ctrl-c-in-a-python-programme
+def signal_handler(signal, frame):
+		# close the socket here
+		exit(0)
 
 # A helper function. It may come in handy when performing symmetric encryption
 def pad_message(message):
@@ -151,20 +158,20 @@ def main():
 				else:
 					fail_msg = encrypt_message(pad_message("User not found"), plaintext_key)   
 					send_message(connection,fail_msg)
-				
-				
-
 			
-				# TODO: Encrypt response to client
-
-				# Send encrypted response
-				#send_message(connection, ciphertext_response)
+			except KeyboardInterrupt:
+				print("Finished with ctrl-c")
+				exit(0)
 			finally:
 				# Clean up the connection
 				connection.close()
+	except KeyboardInterrupt:
+				print("Finished with ctrl-c")
+				exit(0)
 	finally:
 		sock.close()
 
 
 if __name__ in "__main__":
+	signal(SIGINT, signal_handler)
 	main()
