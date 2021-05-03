@@ -1,3 +1,9 @@
+# Information
+
+Encrypted client server program.
+Client sends encrypted symmetric key to server, and server decrypts using PKI.
+Then further communication is done via the symmetric key.
+
 # Install  
 pip install pycryptodome
 
