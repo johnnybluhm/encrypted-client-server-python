@@ -1,1 +1,1 @@
-pip install Crypto
+pip install pycryptodome

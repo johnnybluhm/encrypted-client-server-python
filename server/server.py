@@ -20,7 +20,7 @@ import socket
 import Crypto 
 import sys
 import os
-from Crypto.Cipher import AES
+from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.PublicKey import RSA
 from Crypto.Hash import SHA256
 from pathlib import PureWindowsPath
@@ -41,7 +41,9 @@ def decrypt_key(session_key):
 
 	private_key = RSA.importKey(private_key)
 
-	decrypted_key =private_key.decrypt(session_key)
+	cipher = PKCS1_OAEP.new(private_key)
+
+	decrypted_key = cipher.decrypt(session_key)
 
 
 	
@@ -50,14 +52,18 @@ def decrypt_key(session_key):
 
 # Write a function that decrypts a message using the session key
 def decrypt_message(client_message, session_key):
-	cipher= AES.new(session_key)
+
+	cipher= AES.new(session_key, AES.MODE_ECB)
 
 	return cipher.decrypt(client_message)
 
 
 # Encrypt a message using the session key
 def encrypt_message(message, session_key):
-	cipher= AES.new(session_key)
+
+	message = pad_message(message).encode("utf8")
+
+	cipher= AES.new(session_key, AES.MODE_ECB)
 
 	return cipher.encrypt(message)
 
@@ -129,7 +135,7 @@ def main():
 				# Receive encrypted message from client
 				ciphertext_message = receive_message(connection)
 
-				#decrpty message from client
+				#decrypt message from client
 				decrypted_message = decrypt_message(ciphertext_message,plaintext_key)
 				
 

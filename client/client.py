@@ -22,7 +22,7 @@ import os
 import sys
 import base64
 import Crypto 
-from Crypto.Cipher import AES
+from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.PublicKey import RSA
 
 
@@ -52,24 +52,32 @@ def encrypt_handshake(session_key):
     
     public_key = RSA.importKey(public_key)    
 
+    cipher = PKCS1_OAEP.new(public_key)
     #needs a K value of byte string so I threw in a random byte string
-    encrypted_key = public_key.encrypt(session_key, os.urandom(16))
+    encrypted_key = cipher.encrypt(session_key)
 
     #return only first part of tuple
-    return encrypted_key[0]
+    return encrypted_key
 
 # Encrypts the message using AES. Same as server function
 def encrypt_message(message, session_key):
 
-    
-    cipher= AES.new(session_key)
+    message = pad_message(message).encode("utf8")
 
-    return cipher.encrypt(pad_message(message))
+    cipher= AES.new(session_key, AES.MODE_ECB)
+
+    #nonce = cipher.nonce
+
+    #ciphertext, tag = cipher.encrypt_and_digest(pad_message(message))
+
+    return cipher.encrypt(message)
+    #return ciphertext
 
 
 # Decrypts the message using AES. Same as server function
 def decrypt_message(message, session_key):
-    cipher= AES.new(session_key)
+
+    cipher= AES.new(session_key, AES.MODE_ECB)
 
     return cipher.decrypt(message)
 
