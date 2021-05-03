@@ -110,7 +110,8 @@ def main():
 		encrypted_msg = encrypt_message(message,key)
 		send_message(sock, encrypted_msg)
 
-		print(decrypt_message(receive_message(sock), key))
+		auth_result = decrypt_message(receive_message(sock), key)
+		print(auth_result.decode("utf-8"))
 
 		last_message = "sent from client no encryption"
 		send_message(sock, last_message.encode())
