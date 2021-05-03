@@ -40,8 +40,7 @@ def pad_message(message):
 # TODO: Generate a cryptographically random AES key
 def generate_key():
     #AES has 128 bits or 16 bytes
-    return os.urandom(16)
-    
+    return os.urandom(16)    
 
 
 # Takes an AES session key and encrypts it using the appropriate
@@ -49,12 +48,9 @@ def generate_key():
 def encrypt_handshake(session_key):
 
     with open(os.path.join(sys.path[0], "public_key.pub"), "r") as f:
-        public_key = f.read()
-        
+        public_key = f.read()        
     
-    public_key = RSA.importKey(public_key)
-
-    
+    public_key = RSA.importKey(public_key)    
 
     #needs a K value of byte string so I threw in a random byte string
     encrypted_key = public_key.encrypt(session_key, os.urandom(16))
@@ -62,8 +58,6 @@ def encrypt_handshake(session_key):
     #return only first part of tuple
     return encrypted_key[0]
 
-
-\
 # Encrypts the message using AES. Same as server function
 def encrypt_message(message, session_key):
 
