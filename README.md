@@ -48,4 +48,4 @@ User authentication works. This portion was done to show that I can store passwo
 
 - Passwords are hashed using SHA256
 
-- Networking was written by professor, but all the encryption was written by me. I modified some of the networking as well. This was a project assignment for a intro to security course
+- Networking was written by professor, but all the encryption was written by me. I modified some of the networking as well. This was a project assignment for an intro to security course
