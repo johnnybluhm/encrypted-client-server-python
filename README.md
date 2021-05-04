@@ -12,38 +12,40 @@ The server will print the username and password provided by the client decrypted
 User authentication works. This portion was done to show that I can store passwords correctly. The passwords are all in the passfile.txt. The add_user.py is what will add users to the database.
 
 # Install  
-pip install pycryptodome
+- pip install pycryptodome
 
 # Running
 
-in root dir of project
+- in root dir of project
 
-"python add_user.py" to add a user to the server
+- "python add_user.py" to add a user to the server
 
-Once a user is added, the user can be verified on the server. 
+- Once a user is added, the user can be verified on the server. 
 
-Open two terminals. 
+- Open two terminals. 
 
-In both: cd to root dir of project
+- In both: cd to root dir of project
 
-Client: 
+- Client: 
 
-cd to client dir
+- cd to client dir
 
-"python client.py"
+- "python client.py"
 
-Server:
+- Server:
 
-cd to server dir
+- cd to server dir
 
-"python server.py"
+- "python server.py"
 
-If a user is in the server's "database", user will authenticate.
+- If a user is in the server's "database", user will authenticate.
 
 # Additional information
 
-Username is stored as plain text.
+- Username is stored as plain text.
 
-Passwords are salted, and salt is stored as plaintext.
+- Passwords are salted, and salt is stored as plaintext.
 
-Passwords are hashed using SHA256
+- Passwords are hashed using SHA256
+
+- Networking was written by professor, but all the encryption was written by me. I modified some of the networking as well. This was a project assignment for a intro to security course
